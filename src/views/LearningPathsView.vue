@@ -2,24 +2,32 @@
     <div>
         <h1>Learning Paths</h1>
         <ul>
-            <li v-for="path in learningPaths" :key="path.id">
-                {{ path.name }}
-            </li>
+            <LearningPath v-for="Path in learningPaths" :key="Path.id" :Path="Path"/>
         </ul>
     </div>
 </template>
 
 <script>
+
+import LearningPath from "@/components/LearningPath.vue";
+import { mapActions } from "vuex";
+
 export default {
-    data() {
-        return {
-            learningPaths: [
-                { id: 1, name: 'Path 1' },
-                { id: 2, name: 'Path 2' },
-                { id: 3, name: 'Path 3' },
-            ],
-        };
+    name: "LearningPathView",
+    components: {
+        LearningPath,
     },
+    computed: {
+        learningPaths: function() {
+            return this.$store.getters.getLearningPaths;
+        }
+    },
+    methods: {
+          ...mapActions(["fetchLearningPaths"]),
+    },
+    created: function() {
+        this.fetchLearningPaths();
+    }
 };
 </script>
 

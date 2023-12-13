@@ -10,14 +10,14 @@ const getters = {
 
 const mutations = {
     setLearningPaths: (state, learningPaths) => {
-        state.learningPaths = learningPaths;
+        state.learningPaths = learningPaths["data"];
     },
 };
 
 const actions = {
-    fetchLearningPaths: async ({ commit }) => {
+    fetchLearningPaths: async({ commit }) => {
         try {
-            const response = await axios.get('learning_paths');
+            const response = await axios.get('learningpaths');
             const learningPaths = response.data;
             commit('setLearningPaths', learningPaths);
         } catch (error) {
