@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>{{ student.name }}</h1>
-        <p>Roll Number: {{ student.roll_no }}</p>
+        <!-- <h1>{{ student.name }}</h1> -->
+        <p>Roll Number: {{ Student.rollno }}</p>
 
         <table>
             <thead>
@@ -11,29 +11,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="course in student.courses" :key="course.id">
-                    <td>{{ course.name }}</td>
-                    <td>{{ course.grade }}</td>
+                    <tr v-for="course in Student.completed_courses" :key="course.id">
+                    <td>{{ course.course_id }}</td>
+                    <td>{{ course.score }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </template>
 
+
 <script>
+
+// import { mapActions } from "vuex";
+
 export default {
-    data() {
-        return {
-            student: {
-                name: "John Doe",
-                roll_no: "12345",
-                courses: [
-                    { id: 1, name: "Math", grade: "A" },
-                    { id: 2, name: "Science", grade: "B" },
-                    { id: 3, name: "English", grade: "A+" },
-                ],
-            },
-        };
-    },
+    name: "StudentDetailsView",
+    computed: {
+        Student: function() {
+            return this.$store.getters.getStudent;
+        }
+    }
 };
 </script>
