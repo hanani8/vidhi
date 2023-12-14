@@ -3,7 +3,7 @@
         <h1>Name: {{ Course.name }} </h1>
         <h2>Acronym: {{ Course.acronym }}</h2>
         <p>Credits: {{ Course.credits }}</p>
-        <p>Description: {{ Course.description }}
+        <p>Description: {{ Course.description }}</p>
         <p>Prerequisites: {{ Course.prerequisites }}</p>
         <p>Corequisites: {{ Course.corequisites }}</p>
         <p>Level: {{ Course.level }}</p>
