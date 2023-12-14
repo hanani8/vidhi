@@ -54,4 +54,32 @@ const router = new VueRouter({
   routes
 })
 
+// import store from '../store/index.js';
+
+// function userRouteGuard(to, from, next) {
+//   let isAuthenticated = store.getters.isAuthenticated;
+//   let isUser = store.getters.isUser;
+
+
+//   if (isAuthenticated && isUser) {
+//       next(); // allow to enter route
+//   } else {
+//       next('/login');
+//       return false; // go to '/login';
+//   }
+// }
+
+// function adminRouteGuard(to, from, next) {
+//   let isAuthenticated = store.getters.isAuthenticated;
+//   let isAdmin = store.getters.isAdmin;
+
+
+//   if (isAdmin && isAuthenticated) {
+//       next(); // allow to enter route
+//   } else {
+//       next('/admin/login');
+//       return false; // go to '/login';
+//   }
+// }
+
 export default router
