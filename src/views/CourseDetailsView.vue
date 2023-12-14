@@ -1,20 +1,21 @@
 <template>
     <div class="course-details">
-        <h1 class="course-id">{{ courseId }}</h1>
+        <h1>Name: {{ Course.name }} </h1>
+        <p>Credits: {{ Course.credits }}</p>
+        <p>Description: {{ Course.description }}
+        <p>Prerequisites: {{ Course.prerequisites }}</p>
+        <p>Corequisites: {{ Course.corequisites }}</p>
+        <p>Level: {{ Course.level }}</p>
     </div>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            courseId: null
-        };
-    },
-    created() {
-        // Get the course_id from the URL
-        this.courseId = this.$route.params.course_id;
-
+    name: "CourseDetailsView",
+    computed: {
+        Course: function() {
+            return this.$store.getters.getCourse;
+        }
     }
 };
 </script>

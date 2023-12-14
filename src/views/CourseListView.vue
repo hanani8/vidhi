@@ -2,30 +2,33 @@
     <div>
         <h1>Courses</h1>
         <ul>
-            <li v-for="course in courses" :key="course.id" @click="redirectToCourse(course.id)">
-                <h3>{{ course.title }}</h3>
-                <p>Rating: {{ course.rating }}</p>
-            </li>
+            <!-- <li v-for="Course in Courses" :key="Course.id" @click="redirectToCourse(Course.id)"> -->
+                <CourseComponent v-for="Course in Courses" :key="Course.id" :Course="Course" />
+            <!-- </li> -->
         </ul>
     </div>
 </template>
 
 <script>
+
+import CourseComponent from "@/components/CourseComponent.vue";
+import { mapActions } from "vuex";
+
 export default {
-    data() {
-        return {
-            courses: [
-                { id: 1, title: 'Course 1', rating: 4.5 },
-                { id: 2, title: 'Course 2', rating: 3.8 },
-                { id: 3, title: 'Course 3', rating: 4.2 },
-                // Add more courses here
-            ]
-        };
+    name: "CourseListView",
+    components: {
+        CourseComponent,
+    },
+    computed: {
+        Courses: function() {
+            return this.$store.getters.getCourses;
+        }
     },
     methods: {
-        redirectToCourse(courseId) {
-            this.$router.push(`/course/${courseId}`);
-        }
+          ...mapActions(["fetchCourses"]),
+    },
+    created: function() {
+        this.fetchCourses();
     }
 };
 </script>

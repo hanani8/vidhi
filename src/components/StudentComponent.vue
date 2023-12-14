@@ -18,7 +18,6 @@ export default {
     methods: {
         redirectToStudentDetail() {
             const id = this.student.id;
-            console.log(id);
             this.$store.dispatch("fetchStudent", id);
             this.$router.push("/student/" + id);
         }
