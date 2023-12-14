@@ -1,6 +1,7 @@
 <template>
     <div class="course-details">
         <h1>Name: {{ Course.name }} </h1>
+        <h2>Acronym: {{ Course.acronym }}</h2>
         <p>Credits: {{ Course.credits }}</p>
         <p>Description: {{ Course.description }}
         <p>Prerequisites: {{ Course.prerequisites }}</p>
@@ -10,12 +11,21 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     name: "CourseDetailsView",
     computed: {
         Course: function() {
             return this.$store.getters.getCourse;
-        }
+        },
+    },
+    methods: {
+        ...mapActions(['fetchCourse']),
+    },
+    created: function(){
+        const course_id = this.$route.params.course_id
+        this.fetchCourse(course_id);
     }
 };
 </script>

@@ -24,6 +24,15 @@ const actions = {
             console.error('Error fetching learning paths:', error);
         }
     },
+    upvoteLearningPath: async({ dispatch }, lpID) => {
+        try {
+            // eslint-disable-next-line no-unused-vars
+            let response = await axios.patch(`learningpath/${lpID}`);
+            await dispatch('fetchLearningPaths');
+        } catch (error) {
+            console.error('error upvoting a learning path', error);
+        }
+    }
 };
 
 export default {

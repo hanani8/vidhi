@@ -19,7 +19,7 @@ export default {
     methods: {
         redirectToCourseDetail() {
             const id = this.Course.id;
-            this.$store.dispatch("fetchCourse", id);
+            // this.$store.dispatch("fetchCourse", id);
             this.$router.push("/course/" + id);
         }
     }

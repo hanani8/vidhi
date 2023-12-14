@@ -37,6 +37,17 @@ const actions = {
         } catch (error) {
             console.log("Error while fetching student:", error);
         }
+    },
+    updateScore: async({ dispatch }, courseData) => {
+        try {
+            console.log(courseData);
+            const id = courseData.student_id;
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.patch(`admin/student/${id}`, courseData);
+            await dispatch('fetchStudent', id);
+        } catch (error) {
+            console.log("Error while updating score:", error);
+        }
     }
 };
 
