@@ -52,7 +52,7 @@ const actions = {
         try {
             const id = scoreData.student_id;
             // eslint-disable-next-line no-unused-vars
-            const response = await axios.post_scores(`student/${id}`, scoreData);
+            const response = await axios.post(`student/${id}/scores`, scoreData);
             await dispatch('fetchStudent', id);
         } catch (error) {
             console.log("Error while adding score:", error);
@@ -65,6 +65,25 @@ const actions = {
             await dispatch('fetchStudents');
         } catch (error) {
             console.log("Error while adding score:", error);
+        }
+    },
+    deleteStudent: async({ dispatch }, id) => {
+        try {
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.delete(`admin/student/${id}`);
+            await dispatch('fetchStudents');
+        } catch (error) {
+            console.log("Error while deleting the student:", error);
+        }
+    },
+    editStudent: async({ dispatch }, editedData) => {
+        try {
+            const id = editedData.id;
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.put(`admin/student/${id}`, editedData);
+            await dispatch('fetchStudent', id);
+        } catch (error) {
+            console.log("Error while editing the student:", error);
         }
     }
 };

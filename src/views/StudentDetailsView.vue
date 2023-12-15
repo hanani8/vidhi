@@ -31,6 +31,19 @@
 
             <button type="submit">Add Score</button>
         </form>
+
+        <button @click="editStudentForm">Edit Student</button>
+
+        <!-- Form for editing student details -->
+        <form v-if="isEditing" @submit.prevent="editStudent">
+            <label for="editName">Name:</label>
+            <input type="text" v-model="editData.name" id="editName" required />
+
+            <label for="editPhone">Phone:</label>
+            <input type="text" v-model="editData.phone" id="editPhone" required />
+
+            <button type="submit">Save Changes</button>
+        </form>
     </div>
 </template>
 
@@ -46,6 +59,12 @@ export default {
         score: "",
       },
       allCourses: [],
+      isEditing: false,
+      editData: {
+        name: "",
+        phone: "",
+        rollno: ""
+      },
     };
   },
   computed: {
@@ -58,11 +77,11 @@ export default {
         (course) => course.course_id
       );
       return this.allCourses
-        .filter((course) => !addedCourseIds.includes(course.id))?.map((course) => course.id);
+        .filter((course) => !addedCourseIds?.includes(course.id))?.map((course) => course.id);
     },
   },
   methods: {
-    ...mapActions(["fetchStudent", "fetchCourses"]),
+    ...mapActions(["fetchStudent", "fetchCourses","editStudent"]),
     editScore(course) {
       const courseData = {
         student_id: this.Student.id,
@@ -88,6 +107,33 @@ export default {
         course_id: "",
         score: "",
       };
+    },
+    editStudentForm() {
+      // Set isEditing to true and populate the editData with current student details
+      this.isEditing = true;
+      this.editData = {
+        name: this.Student.name,
+        phone: this.Student.phone,
+        email: this.Student.rollno + "@ds.study.iitm.ac.in"
+      };
+    },
+    editStudent() {
+      // Dispatch the action to edit the student
+      const editedData = {
+        id: this.Student.id,
+        name: this.editData.name,
+        phone: this.editData.phone,
+        email: this.editData.email
+      };
+      this.$store.dispatch("editStudent", editedData);
+
+      // Reset the form and fetch updated student details
+      this.isEditing = false;
+      this.editData = {
+        name: "",
+        phone: "",
+      };
+      this.fetchStudent(this.Student.id);
     },
   },
   created: function () {
