@@ -20,37 +20,84 @@
                 </tr>
             </tbody>
         </table>
-        
+        <form @submit.prevent="addScore">
+            <label for="course_id">Course ID:</label>
+            <select v-model="newScore.course_id" required>
+                <option v-for="courseId in availableCourseIds" :key="courseId" :value="courseId">{{ courseId }}</option>
+            </select>
+
+            <label for="score">Score:</label>
+            <input type="text" v-model="newScore.score" required>
+
+            <button type="submit">Add Score</button>
+        </form>
     </div>
 </template>
 
-
 <script>
-
 import { mapActions } from "vuex";
 
 export default {
-    name: "StudentDetailsView",
-    computed: {
-        Student: function() {
-            return this.$store.getters.getStudent;
-        }
+  name: "StudentDetailsView",
+  data() {
+    return {
+      newScore: {
+        course_id: "",
+        score: "",
+      },
+      allCourses: [],
+    };
+  },
+  computed: {
+    Student: function () {
+      return this.$store.getters.getStudent;
     },
-    methods: {
-        ...mapActions(["fetchStudent"]),
-        editScore(course) {
-            const courseData = {
-                student_id: this.Student.id,
-                course_id: course.course_id,
-                score: course.score,
-                sequence: course.sequence
-            };
-            this.$store.dispatch("updateScore", courseData);
-        }
+    availableCourseIds() {
+      // Filter out course IDs already added to the student's details
+      const addedCourseIds = this.Student.completed_courses?.map(
+        (course) => course.course_id
+      );
+      return this.allCourses
+        .filter((course) => !addedCourseIds.includes(course.id))?.map((course) => course.id);
     },
-    created: function(){
-        const student_id = this.$route.params.student_id
-        this.fetchStudent(student_id);
-    }
+  },
+  methods: {
+    ...mapActions(["fetchStudent", "fetchCourses"]),
+    editScore(course) {
+      const courseData = {
+        student_id: this.Student.id,
+        course_id: course.course_id,
+        score: course.score,
+        sequence: course.sequence,
+      };
+      this.$store.dispatch("updateScore", courseData);
+    },
+    addScore() {
+      const courseData = {
+        student_id: this.Student.id,
+        course_id: this.newScore.course_id,
+        score: this.newScore.score,
+        sequence: this.newScore.sequence,
+      };
+
+      // Dispatch the action to add the score
+      this.$store.dispatch("addScore", courseData);
+
+      // Optionally, clear the form after adding the score
+      this.newScore = {
+        course_id: "",
+        score: "",
+      };
+    },
+  },
+  created: function () {
+    const student_id = this.$route.params.student_id;
+    this.fetchStudent(student_id);
+
+    // Fetch courses in the created hook and set allCourses
+    this.fetchCourses().then(() => {
+      this.allCourses = this.$store.getters.getCourses;
+    });
+  },
 };
 </script>

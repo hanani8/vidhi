@@ -40,13 +40,31 @@ const actions = {
     },
     updateScore: async({ dispatch }, courseData) => {
         try {
-            console.log(courseData);
             const id = courseData.student_id;
             // eslint-disable-next-line no-unused-vars
             const response = await axios.patch(`admin/student/${id}`, courseData);
             await dispatch('fetchStudent', id);
         } catch (error) {
             console.log("Error while updating score:", error);
+        }
+    },
+    addScore: async({ dispatch }, scoreData) => {
+        try {
+            const id = scoreData.student_id;
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.post_scores(`student/${id}`, scoreData);
+            await dispatch('fetchStudent', id);
+        } catch (error) {
+            console.log("Error while adding score:", error);
+        }
+    },
+    addStudent: async({ dispatch }, studentData) => {
+        try {
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.post(`admin/student`, studentData);
+            await dispatch('fetchStudents');
+        } catch (error) {
+            console.log("Error while adding score:", error);
         }
     }
 };
