@@ -3,17 +3,22 @@
     <!-- Header Section -->
     <header class="flex items-center justify-between p-4 bg-gray-800 text-white">
       <h1 class="text-2xl font-bold">DataForge</h1>
-      <div class="relative">
+
+      <div v-if="isAuthenticated != false" class="relative">
         <button @click="toggleDropdown">
             <img src="@/assets/person_1.svg" alt="Person Icon" class="w-8 h-8 text-white" />
         </button>
         <!-- Dropdown -->
-        <div v-if="showDropdown" class="absolute right-0 mt-2 bg-white shadow-md rounded-md p-2">
+        <div v-if="showDropdown" class="absolute right-0 mt-2 bg-black shadow-md rounded-md p-2">
           <!-- Dropdown content goes here -->
-          <a href="/logout">Logout</a>
+          <button v-on:click="_logout">Logout</button>
           <!-- You can customize the dropdown content as needed -->
         </div>
       </div>
+      <div v-else>
+        <router-link to="/login">Login</router-link>
+      </div>
+    
     </header>
 
     <main class="flex-1 overflow-y-auto">
@@ -60,15 +65,26 @@ nav a.router-link-exact-active {
 </style>
 
 <script>
+import {mapGetters, mapActions} from "vuex";
+
 export default {
   data() {
     return {
       showDropdown: false,
     };
   },
+  computed: {
+    ...mapGetters(["isAuthenticated"]),
+  },
   methods: {
+    ...mapActions(["logout"]),
     toggleDropdown() {
       this.showDropdown = !this.showDropdown;
+    },
+    _logout() {
+      this.logout();
+      this.toggleDropdown();
+      this.$router.push("/");
     },
   },
 };

@@ -34,11 +34,18 @@ const routes = [
     path: '/admin',
     name: 'admin',  
     component: () => import(/* webpackChunkName: "admin" */ '../views/AdminHomeView.vue'),
+    beforeEnter: adminRouteGuard
   },
   {
     path: '/student/:student_id',
     name: 'student',  
     component: () => import(/* webpackChunkName: "student" */ '../views/StudentDetailsView.vue'),
+    beforeEnter: adminRouteGuard
+  },
+  {
+    path: '/login',
+    name: 'login',  
+    component: () => import(/* webpackChunkName: "student" */ '../views/LoginPageView.vue'),
   }
   // {
   //   path: '/about',
@@ -54,7 +61,7 @@ const router = new VueRouter({
   routes
 })
 
-// import store from '../store/index.js';
+import store from '../store/index.js';
 
 // function userRouteGuard(to, from, next) {
 //   let isAuthenticated = store.getters.isAuthenticated;
@@ -69,17 +76,17 @@ const router = new VueRouter({
 //   }
 // }
 
-// function adminRouteGuard(to, from, next) {
-//   let isAuthenticated = store.getters.isAuthenticated;
-//   let isAdmin = store.getters.isAdmin;
+function adminRouteGuard(to, from, next) {
+  let isAuthenticated = store.getters.isAuthenticated;
+  let isAdmin = store.getters.isAdmin;
 
 
-//   if (isAdmin && isAuthenticated) {
-//       next(); // allow to enter route
-//   } else {
-//       next('/admin/login');
-//       return false; // go to '/login';
-//   }
-// }
+  if (isAdmin && isAuthenticated) {
+      next(); // allow to enter route
+  } else {
+      next('/login');
+      return false; // go to '/login';
+  }
+}
 
 export default router
