@@ -1,5 +1,5 @@
 <template>
-    <div @click="redirectToCourseDetail">
+    <div @click="redirectToCourseDetail" class="border-2 border-black">
         <p>Name: {{ Course.name }} </p>
         <p>Credits: {{ Course.credits }}</p>
         <p>Prerequisites: {{ Course.prerequisites }}</p>
