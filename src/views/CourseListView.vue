@@ -1,11 +1,9 @@
 <template>
     <div>
-        <h1>Courses</h1>
-        <ul>
-            <!-- <li v-for="Course in Courses" :key="Course.id" @click="redirectToCourse(Course.id)"> -->
-                <CourseComponent v-for="Course in Courses" :key="Course.id" :Course="Course" />
-            <!-- </li> -->
-        </ul>
+        <div class="divider divider-error font-bold text-xl">Courses</div>
+        <div class="join join-vertical gap-3">
+            <CourseComponent class="join-item" v-for="Course in Courses" :key="Course.id" :Course="Course" />
+        </div>
     </div>
 </template>
 

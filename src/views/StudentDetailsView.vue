@@ -1,48 +1,65 @@
 <template>
     <div>
-        <!-- <h1>{{ student.name }}</h1> -->
-        <p>Roll Number: {{ Student.rollno }}</p>
-        <p>CGPA: {{ Student.cgpa }}</p>
-        <p>Contact Number: {{ Student.phone }}</p>
+    <div class="divider divider-error font-bold text-xl">{{ Student.rollno }}</div>
+    <button class="btn btn-sm float-right mr-2" @click="editStudentForm">Edit Student</button>
 
-        <table>
+        <div class="stats shadow">
+  
+          <div class="stat">
+            <div class="stat-title">CGPA</div>
+            <div class="stat-value">{{Student.cgpa}}</div>
+          </div>
+          
+        </div>
+        <table class="table dashed">
             <thead>
                 <tr>
                     <th>Course</th>
                     <th>Grade</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                     <tr v-for="course in Student.completed_courses" :key="course.id">
                     <td>{{ course.course_id }}</td>
-                    <td><input type="text" v-model="course.score"/></td>
-                    <td><button @click="editScore(course)">Save changes</button></td>
+                    <td><input type="number" class="input input-bordered max-w-xs" v-model="course.score"/></td>
+                    <td><button class="btn btn-sm" @click="editScore(course)">Save</button></td>
                 </tr>
             </tbody>
         </table>
-        <form @submit.prevent="addScore">
-            <label for="course_id">Course ID:</label>
-            <select v-model="newScore.course_id" required>
-                <option v-for="courseId in availableCourseIds" :key="courseId" :value="courseId">{{ courseId }}</option>
-            </select>
+        <div class="divider">Add Course</div>
+          <form @submit.prevent="addScore">
+            <div class="label">
+              <span class="label-text text-xs">Course ID</span>
+            </div>
+              <select class="select select-bordered w-full max-w-xs" v-model="newScore.course_id" required>
+                  <option v-for="courseId in availableCourseIds" :key="courseId" :value="courseId">{{ courseId }}</option>
+              </select>
 
-            <label for="score">Score:</label>
-            <input type="text" v-model="newScore.score" required>
+              <div class="label">
+                <span class="label-text text-xs">Score:</span>
+              </div>
+              <input class="input input-bordered max-w-xs w-full" type="number" v-model="newScore.score" required>
 
-            <button type="submit">Add Score</button>
-        </form>
+              <button class="btn btn-sm my-3 block mx-auto" type="submit">Add Score</button>
+          </form>
 
-        <button @click="editStudentForm">Edit Student</button>
 
         <!-- Form for editing student details -->
+        <div v-if="isEditing" class="divider">Edit Student</div>
+
         <form v-if="isEditing" @submit.prevent="editStudent">
-            <label for="editName">Name:</label>
-            <input type="text" v-model="editData.name" id="editName" required />
+          <div class="label">
+            <span class="label-text text-xs" for="editName">Roll No.</span>
+          </div>
+            <input class="input input-bordered max-w-xs w-full" type="text" v-model="editData.name" id="editName" required />
 
-            <label for="editPhone">Phone:</label>
-            <input type="text" v-model="editData.phone" id="editPhone" required />
+            <div class="label">
+              <span class="label-text text-xs" for="editPhone">Phone</span>
+            </div>
+            <input class="input input-bordered max-w-xs w-full" type="text" v-model="editData.phone" id="editPhone" required />
 
-            <button type="submit">Save Changes</button>
+            <button class="btn btn-sm my-3 block mx-auto" type="submit">Save Changes</button>
         </form>
     </div>
 </template>

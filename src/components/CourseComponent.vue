@@ -1,10 +1,15 @@
 <template>
-    <div @click="redirectToCourseDetail" class="border-2 border-black">
-        <p>Name: {{ Course.name }} </p>
-        <p>Credits: {{ Course.credits }}</p>
-        <p>Prerequisites: {{ Course.prerequisites }}</p>
-        <p>Corequisites: {{ Course.corequisites }}</p>
-    </div>
+    <div @click="redirectToCourseDetail" class="card w-96 bg-base-100 shadow-xl">
+        <div class="badge bg-primary badge-xs px-2 py-2">{{ Course.level }}</div>
+        <div class="card-body">
+          <h2 class="card-title">{{ Course.name }}</h2>
+          <div class="card-actions justify-end">
+            <div class="badge badge-outline bg-secondary">{{ Course.credits }}</div> 
+            <div class="badge badge-outline">{{ Course.prerequisites }}</div> 
+            <div class="badge badge-outline">{{ Course.corequisites }}</div>
+          </div>
+        </div>
+      </div>
 </template>
 
 <script>

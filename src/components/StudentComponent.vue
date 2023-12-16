@@ -1,12 +1,10 @@
 <template>
-    <div >
-        <div @click="redirectToStudentDetail">
-            <p>Roll number: {{ student.rollno }} </p>
-            <p>Phone number: {{ student.phone }}</p>
-            <p>CGPA: {{ student.cgpa }}</p>
-            <button @click="deleteStudent">DELETE</button>
-        </div>
-    </div>
+        <tr>
+            <td @click="redirectToStudentDetail">{{ student.rollno }} </td>
+            <td @click="redirectToStudentDetail">{{ student.phone }}</td>
+            <td @click="redirectToStudentDetail">{{ student.cgpa }}</td>
+            <td><button class="btn btn-xs" @click="deleteStudent">DELETE</button></td>
+        </tr>
 </template>
 
 <script>

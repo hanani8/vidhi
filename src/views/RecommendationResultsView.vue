@@ -1,16 +1,23 @@
 <template>
     <div>
-        <h1>Recommendation Results</h1>
-        <table>
+        <div class="divider divider-error font-bold text-xl">Recommendation Results</div>
+        <table class="table table-zebra">
             <thead>
                 <tr>
-                    <th>Course Name</th>
+                <th>S. No</th>
+                    <th>Course ID</th>
+                    <th>Course</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Render each course row dynamically -->
-                <tr v-for="course in Recommendations" :key="course.id">
+                <tr v-for="(course, index) in Recommendations" :key="course.id">
+                    <td>{{ index + 1 }}</td>
                     <td>{{ course }}</td>
+                    <td>
+                        <router-link :to="'/course/' + course">
+                            <i class="fa fa-link"></i>
+                        </router-link>
+                    </td>
                 </tr>
             </tbody>
         </table>
