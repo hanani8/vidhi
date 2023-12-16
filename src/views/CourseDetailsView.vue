@@ -91,7 +91,7 @@ export default {
         },
         _voteFeedback(feedback, vote) {
             this.voteFeedback({
-                id: this.$route.params.course_id,
+                feedback: feedback,
                 vote: vote
             });
         },

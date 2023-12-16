@@ -108,15 +108,17 @@ const actions = {
             console.log("Error while deleting feedback:", error);
         }
     },
-    voteFeedback: async({ dispatch }, { id, vote }) => {
+    voteFeedback: async({ dispatch }, { feedback, vote }) => {
         try {
             const data = {
+                "feedback_id": feedback.id,
                 "vote": vote
             }
-            const response = await axios.put(`course/${id}/feedback/vote`, data);
+            console.log(data);
+            const response = await axios.put(`course/feedback/vote`, data);
             // eslint-disable-next-line no-unused-vars
             const feedbacks = response.data;
-            dispatch('fetchFeedbacks', id);
+            dispatch('fetchFeedbacks', feedback.course_id);
         } catch (error) {
             console.log("Error while voting feedback:", error);
         }
@@ -141,7 +143,7 @@ const actions = {
             if (current_rating) {
                 current_rating_value = current_rating.value;
             }
-            if(current_rating_value == 0) {
+            if (current_rating_value == 0) {
                 const response = await axios.post(`course/${course_id}/rating`, data);
                 // eslint-disable-next-line no-unused-vars
                 const ratings = response.data;
@@ -158,7 +160,7 @@ const actions = {
             console.log("Error while giving rating:", error);
         }
     }
-    
+
 };
 
 export default {
