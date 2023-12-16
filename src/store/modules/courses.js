@@ -114,7 +114,6 @@ const actions = {
                 "feedback_id": feedback.id,
                 "vote": vote
             }
-            console.log(data);
             const response = await axios.put(`course/feedback/vote`, data);
             // eslint-disable-next-line no-unused-vars
             const feedbacks = response.data;
@@ -148,12 +147,14 @@ const actions = {
                 // eslint-disable-next-line no-unused-vars
                 const ratings = response.data;
                 dispatch('fetchRatings', course_id);
+                dispatch('fetchRating', course_id);
                 return;
             } else {
                 const response = await axios.put(`course/${course_id}/rating`, data);
                 // eslint-disable-next-line no-unused-vars
                 const ratings = response.data;
                 dispatch('fetchRatings', course_id);
+                dispatch('fetchRating', course_id);
                 return;
             }
         } catch (error) {

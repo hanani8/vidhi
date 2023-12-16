@@ -17,12 +17,15 @@
         </div>
 
         <div v-if="isAuthenticated" class="border-2 border-black">
-            <p>Rating Types: </p>
-            
             <div v-for="ratingType in ratingTypes" :key="ratingType.id">
-                {{ ratingType.rtype }} 
-                <p v-if="getPreviousRating(ratingType.id) > 0">Previous Rating: {{ getPreviousRating(ratingType.id) }}</p>
-                <input v-else type="number" v-model="rating_value" />
+                {{ ratingType.rtype }}:
+                <p v-if="getPreviousRating(ratingType.id) > 0">
+                    {{ getPreviousRating(ratingType.id) }}
+                </p>
+                <input v-else type="number" v-model="ratingValues[ratingType.id]" />
+                <button v-if="getPreviousRating(ratingType.id) === 0" @click="rate(ratingValues[ratingType.id], ratingType.id)">
+                    Give Rating
+                </button>
             </div>
         </div>
         
@@ -54,8 +57,8 @@ export default {
     data() {
         return {
             newFeedback: "",
-            rating_value: ""
-            // currentRatings: {},
+            rating_value: "",
+            ratingValues: {},
         };
     },
     computed: {
@@ -100,6 +103,8 @@ export default {
             return previousRating ? previousRating.value : 0;
         },
         rate(value, rating_id) {
+            this.$set(this.ratingValues, rating_id, value);
+
             this.giveRating({
                 course_id: this.$route.params.course_id,
                 rating_type: rating_id,
