@@ -8,9 +8,22 @@
         <p>Corequisites: {{ Course.corequisites }}</p>
         <p>Level: {{ Course.level }}</p>
         <hr>
+
         <div class="border-2 border-black">
             <p>Ratings: </p>
-            <p v-for="rating in ratings" :key="rating.id">{{ rating.rtype }} {{ rating.avg_rating }}</p>
+            <p v-for="rating in ratings" :key="rating.id">
+                {{ rating.rtype }} {{ rating.avg_rating }}
+            </p>
+        </div>
+
+        <div v-if="isAuthenticated" class="border-2 border-black">
+            <p>Rating Types: </p>
+            
+            <div v-for="ratingType in ratingTypes" :key="ratingType.id">
+                {{ ratingType.rtype }} 
+                <p v-if="getPreviousRating(ratingType.id) > 0">Previous Rating: {{ getPreviousRating(ratingType.id) }}</p>
+                <input v-else type="number" v-model="rating_value" />
+            </div>
         </div>
         
         <p>Feedbacks: </p>
@@ -41,6 +54,8 @@ export default {
     data() {
         return {
             newFeedback: "",
+            rating_value: ""
+            // currentRatings: {},
         };
     },
     computed: {
@@ -54,10 +69,16 @@ export default {
         },
         ratings: function() {
             return this.$store.getters.getRatings;
+        },
+        rating: function() {
+            return this.$store.getters.getRating;
+        },
+        ratingTypes: function() {
+            return this.$store.getters.getRatingTypes;
         }
     },
     methods: {
-        ...mapActions(['fetchCourse', 'fetchFeedbacks', 'fetchRatings', 'postFeedback', 'deleteFeedback', 'voteFeedback']),
+        ...mapActions(['fetchCourse', 'fetchFeedbacks', 'fetchRatings', 'fetchRating', 'postFeedback', 'deleteFeedback', 'voteFeedback', 'fetchRatingTypes', 'giveRating']),
         addFeedback() {
             this.postFeedback({
                 id: this.$route.params.course_id,
@@ -73,14 +94,34 @@ export default {
                 id: this.$route.params.course_id,
                 vote: vote
             });
+        },
+        getPreviousRating(ratingTypeID) {
+            const previousRating = this.rating.find(rating => rating.rating_id == ratingTypeID);
+            return previousRating ? previousRating.value : 0;
+        },
+        rate(value, rating_id) {
+            this.giveRating({
+                course_id: this.$route.params.course_id,
+                rating_type: rating_id,
+                rating_value: value
+            })
         }
-        
     },
     created: function(){
         const course_id = this.$route.params.course_id
         this.fetchCourse(course_id);
         this.fetchFeedbacks(course_id);
-        this.fetchRatings(course_id)
+        this.fetchRatings(course_id);
+        this.fetchRatingTypes();
+        this.fetchRating(course_id);
+
+        // this.currentRatings = this.ratingTypes.map(ratingType => ({ id: ratingType.id, value: 0 }));
+        // // Update the values based on the existing ratings
+        // this.rating.forEach(rating => {
+        //         this.currentRatings[rating.rating_id] = rating.value;
+        // });
+        // console.log(this.currentRatings);
+
     }
 };
 </script>
